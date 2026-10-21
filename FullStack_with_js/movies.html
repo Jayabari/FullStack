@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie CRUD Operations</title>
+</head>
+<body>
+    <h2>Movie Management</h2>
+    <input type="text" id="name" placeholder="Enter movie name"><br><br>
+    <input style="width:25%;" id="rating" placeholder="Enter ratings" min="0" max="10"><br><br>
+    <button onclick="addMovie()">Add Movie</button><br><br>
+    <button onclick="updateMovie()">Update Movie</button><br><br>
+    <button onclick="deleteMovie()">Delete Movie</button>
+    <h3>Movie List</h3>
+    <ul id="movieList"></ul>
+    <script src="movies.js"></script>
+</body>
+</html>
