@@ -1,34 +1,31 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reaction Timer</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial;
-        }
-        #box {
-            width: 300px;
-            height: 200px;
-            background-color: red;
-            margin: 30px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            cursor: pointer;
-            font-size: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Reaction Timer</title>
+  <style>
+    body { text-align: center; font-family: Arial; }
+    #box {
+      height: 200px;
+      max-width: 400px;
+      margin: 30px auto;
+      background: red;
+      display: grid;
+      place-items: center;
+      color: white;
+      cursor: pointer;
+      font-size: 22px;
+    }
+    #box.ready { background: green; }
+  </style>
 </head>
 <body>
-    <h1>Reaction Timer</h1>
-    <h3 id="result">Click Start Game</h3>
-    <button id="startBtn">Start Game</button>
-    <div id="box">Wait for Green!</div>
-    <script src="reaction.js"></script>
+  <h2>Reaction Timer</h2>
+  <p>Click when the box turns green!</p>
+  <div id="box">Click Start</div>
+  <button id="start">Start</button>
+  <p id="result"></p>
+  <p>Best: <span id="best">--</span> ms</p>
+  <script src="reaction_timer.js"></script>
 </body>
 </html>

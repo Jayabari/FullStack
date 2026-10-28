@@ -1,53 +1,32 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Whack-a-Mole</title>
-    <style>
-        body {
-            text-align: center;
-        }
-        .hero {
-            display: grid;
-            grid-template-columns: repeat(3, 100px);
-            gap: 10px;
-            justify-content: center;
-            margin: 20px auto;
-        }
-        .hole {
-            height: 100px;
-            border: 2px solid black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-        button {
-            cursor: pointer;
-        }
-        .active {
-            background-color: lightgreen;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Whack-a-Mole</title>
+  <style>
+    body{
+        text-align: center;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(3, 85px);
+      gap: 8px;
+      justify-content: center;
+    }
+    .cell {
+      height: 75px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .active { background: lightgreen; }
+  </style>
 </head>
 <body>
-    <h1>Whack-a-Mole</h1>
-    <h3>Score: <span id="score">0</span></h3>
-    <h3>Time: <span id="time">30</span></h3>
-    <button id="startBtn">Start Game</button>
-    <div class="hero" id="hero">
-        <div class="hole">1</div>
-        <div class="hole">2</div>
-        <div class="hole">3</div>
-        <div class="hole">4</div>
-        <div class="hole">5</div>
-        <div class="hole">6</div>
-        <div class="hole">7</div>
-        <div class="hole">8</div>
-        <div class="hole">9</div>
-    </div>
-    <script src="whack-a-mole.js"></script>
+  <h2>Whack-a-Mole</h2>
+  <p>Score: <span id="score">0</span></p>
+  <p>Time: <span id="time">30</span>s</p>
+  <button id="start">Start Game</button><br><br>
+  <div id="grid"></div>
+  <script src="whack-a-hole.js"></script>
 </body>
 </html>

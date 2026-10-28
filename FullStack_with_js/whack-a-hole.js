@@ -1,50 +1,67 @@
+const grid = document.getElementById("grid");
+const scoreText = document.getElementById("score");
+const timeText = document.getElementById("time");
 
-let grid = document.getElementById("hero");
-let scoreText = document.getElementById("score");
-let timeText = document.getElementById("time");
-let startBtn = document.getElementById("startBtn");
-let cells = document.querySelectorAll(".hole");
-let score = 0;
-let time = 30;
-let moleTime;
-let gameTime;
-startBtn.addEventListener("click", function() {
-    clearInterval(moleTime);
-    clearInterval(gameTime);
-    score = 0;
-    time = 30;
-    scoreText.innerText = score;
-    timeText.innerText = time;
-    startBtn.disabled = true;
-    cells.forEach(function(cell) {
-        cell.classList.remove("active");
+for (let i = 0; i < 9; i++) {
+    const cell = document.createElement("button");
+    cell.className = "cell";
+    cell.dataset.index = i;
+    grid.appendChild(cell);
+}
+
+let score = 0, time = 30, mole = -1;
+let moveTimer, clockTimer, playing = false;
+
+function moveMole() {
+    grid.querySelectorAll(".cell").forEach(cell => {
+        cell.classList.toggle("active", false);
+        cell.textContent = "";
     });
-    moleTime = setInterval(function() {
-        cells.forEach(function(cell) {
-            cell.classList.remove("active");
-        });
-        let random = Math.floor(Math.random() * 9);
-        cells[random].classList.toggle("active");
-    }, 800);
-    gameTime = setInterval(function() {
-        time--;
-        timeText.innerText = time;
-        if (time <= 0) {
-            clearInterval(moleTime);
-            clearInterval(gameTime);
-            cells.forEach(function(cell) {
-                cell.classList.remove("active");
-            });
-            startBtn.disabled = false;
-            alert("Game Over! Your score: " + score);
-        }
-    }, 1000);
-});
-grid.addEventListener("click", function(event) {
-    if (event.target.classList.contains("active")) {
+
+    mole = Math.floor(Math.random() * 9);
+    const cell = grid.children[mole];
+    cell.classList.toggle("active", true);
+    cell.textContent = "🐹";
+}
+
+grid.addEventListener("click", event => {
+    const cell = event.target.closest(".cell");
+    if (!playing || !cell) return;
+
+    if (Number(cell.dataset.index) === mole) {
         score++;
-        scoreText.innerText = score;
-        
-        event.target.classList.remove("active");
+        scoreText.textContent = score;
+        moveMole();
     }
 });
+
+document.getElementById("start").onclick = () => {
+    clearInterval(moveTimer);
+    clearInterval(clockTimer);
+
+    score = 0;
+    time = 30;
+    playing = true;
+    scoreText.textContent = score;
+    timeText.textContent = time;
+    moveMole();
+
+    moveTimer = setInterval(moveMole, 800);
+
+    clockTimer = setInterval(() => {
+        time--;
+        timeText.textContent = time;
+
+        if (time <= 0) {
+            clearInterval(moveTimer);
+            clearInterval(clockTimer);
+            playing = false;
+            mole = -1;
+            grid.querySelectorAll(".cell").forEach(cell => {
+                cell.classList.toggle("active", false);
+                cell.textContent = "";
+            });
+            alert("Game over! Score: " + score);
+        }
+    }, 1000);
+};

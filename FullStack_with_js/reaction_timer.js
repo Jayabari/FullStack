@@ -1,49 +1,44 @@
+const box = document.getElementById("box");
+const result = document.getElementById("result");
+let timer = null, startTime = 0, state = "idle";
 
-let box = document.getElementById("box");
-let result = document.getElementById("result");
-let startBtn = document.getElementById("startBtn");
-let startTime;
-let timer;
-let ready = false;
-let playing = false;
-startBtn.addEventListener("click", function() {
+function updateBest() {
+    const best = localStorage.getItem("reactionBest");
+    document.getElementById("best").textContent =
+        best === null ? "--" : best;
+}
+
+document.getElementById("start").onclick = () => {
     clearTimeout(timer);
-    ready = false;
-    playing = true;
-    startBtn.disabled = true;
-    box.style.backgroundColor = "red";
-    box.innerText = "Wait for Green!";
-    result.innerText = "Get Ready...";
-    let delay = Math.floor(Math.random() * 3000) + 2000;
-    timer = setTimeout(function() {
-        box.style.backgroundColor = "green";
-        box.innerText = "CLICK NOW!";
+    state = "waiting";
+    box.classList.remove("ready");
+    box.textContent = "Wait for green...";
+    result.textContent = "";
+
+    timer = setTimeout(() => {
+        state = "ready";
+        box.classList.add("ready");
+        box.textContent = "CLICK NOW!";
         startTime = Date.now();
-        ready = true;
-    }, delay);
-});
-box.addEventListener("click", function() {
-    if (!playing) {
-        return;
-    }
-    if (!ready) {
+    }, 2000 + Math.random() * 3000);
+};
+box.onclick = () => {
+    if (state === "waiting") {
         clearTimeout(timer);
-        result.innerText = "Too early! Try again.";
-        box.innerText = "Too Early!";
-        playing = false;
-        startBtn.disabled = false;
-        return;
+        state = "idle";
+        box.textContent = "Too early! Start again.";
+        result.textContent = "Wait until the box turns green.";
+    } else if (state === "ready") {
+        const elapsed = Date.now() - startTime;
+        state = "idle";
+        box.textContent = "Done!";
+        result.textContent = "Your reaction time: " + elapsed + " ms";
+
+        const best = localStorage.getItem("reactionBest");
+        if (best === null || elapsed < Number(best)) {
+            localStorage.setItem("reactionBest", elapsed);
+            updateBest();
+        }
     }
-    let reactionTime = Date.now() - startTime;
-    result.innerText = "Reaction Time: " + reactionTime + " ms";
-    box.innerText = "Well Done!";
-    playing = false;
-    ready = false;
-    startBtn.disabled = false;
-    let best = localStorage.getItem("bestTime");
-    if (best === null || reactionTime < Number(best)) {
-        localStorage.setItem("bestTime", reactionTime);
-    }
-    result.innerText +=
-        " | Best: " + localStorage.getItem("bestTime") + " ms";
-});
+};
+updateBest();
